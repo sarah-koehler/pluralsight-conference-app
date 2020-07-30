@@ -1,9 +1,12 @@
 package com.sarah.conferencedemo.models;
 
+import org.hibernate.annotations.Type;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Lob;
 import javax.persistence.ManyToMany;
 import java.util.List;
 
@@ -26,8 +29,24 @@ public class Speaker {
     @ManyToMany(mappedBy = "speakers")
     private List<Session> sessions;
 
+    // binary data field for the photo (as byte array)
+    // this annotation says that this is a "Large OBject"
+    @Lob
+    // Hibernate is the JPA implementation we are using
+    // this annotation helps it to manage large data, otherwise we might get exceptions
+    @Type(type="org.hibernate.type.BinaryType")
+     private byte[] speaker_photo;
+
     public Speaker(){
 
+    }
+
+    public byte[] getSpeaker_photo() {
+        return speaker_photo;
+    }
+
+    public void setSpeaker_photo(final byte[] speaker_photo) {
+        this.speaker_photo = speaker_photo;
     }
 
     public List<Session> getSessions() {
