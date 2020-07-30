@@ -4,6 +4,10 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import java.util.List;
 
 // Indicates that this class is connected to a database table (called sessions)
 @Entity(name = "sessions")
@@ -23,6 +27,19 @@ public class Session {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long session_id;
 
+    // m to n relationship to Speakers
+    // the session owns the relationship
+    // in DB is a join table
+    // this annotation says that this field is many to many relationship with a join table
+    @ManyToMany
+    // this specifies the join table (name) and the foreign keys
+    @JoinTable(
+        name = "session_speakers",
+        joinColumns = @JoinColumn(name = "session_id"),
+        inverseJoinColumns = @JoinColumn(name = "speaker_id")
+    )
+    private List<Speaker> speakers;
+
 
 
     // public constructor to allow for easy serialization and deserialization
@@ -30,6 +47,14 @@ public class Session {
     }
 
     // auto generated getter and setter
+
+    public List<Speaker> getSpeakers() {
+        return speakers;
+    }
+
+    public void setSpeakers(final List<Speaker> speakers) {
+        this.speakers = speakers;
+    }
 
     public String getSession_name() {
         return session_name;
