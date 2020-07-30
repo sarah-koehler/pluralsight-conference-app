@@ -1,5 +1,7 @@
 package com.sarah.conferencedemo.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -11,6 +13,9 @@ import java.util.List;
 
 // Indicates that this class is connected to a database table (called sessions)
 @Entity(name = "sessions")
+// ignore these properties when the class is serialized to JSON
+// these are properties and stub methods added by hibernate because the class has a relation
+@JsonIgnoreProperties({"handler", "hibernateLazyInitializer"})
 public class Session {
     // fields of this model, mapping the columns of the table in the DB
     // use snake case against java convention to keep names as in DB

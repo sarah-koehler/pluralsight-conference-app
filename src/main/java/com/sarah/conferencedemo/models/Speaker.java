@@ -1,5 +1,7 @@
 package com.sarah.conferencedemo.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.Entity;
@@ -11,6 +13,7 @@ import javax.persistence.ManyToMany;
 import java.util.List;
 
 @Entity( name = "speakers")
+@JsonIgnoreProperties({"handler", "hibernateLazyInitializer"})
 public class Speaker {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,6 +30,9 @@ public class Speaker {
     // instead we just say that it is part of a Relationship
     // and how the field is called on the other side of the relation
     @ManyToMany(mappedBy = "speakers")
+    // don't serialize this in JSON response
+    // required here to avoid cyclical serialization of sessions and speakers
+    @JsonIgnore
     private List<Session> sessions;
 
     // binary data field for the photo (as byte array)
